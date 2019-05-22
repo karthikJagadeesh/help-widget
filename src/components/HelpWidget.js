@@ -9,9 +9,14 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import TextField from '@material-ui/core/TextField';
 
+import AccountBox from '@material-ui/icons/AccountBox';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 import AttachFile from '@material-ui/icons/AttachFile';
 import Check from '@material-ui/icons/Check';
 import Email from '@material-ui/icons/EmailOutlined';
+import Folder from '@material-ui/icons/Folder';
+import PersonPinCircle from '@material-ui/icons/PersonPinCircle';
+import Search from '@material-ui/icons/Search';
 
 import { withStyles } from '@material-ui/core/styles';
 
@@ -27,11 +32,161 @@ function _LiveChat({ classes }) {
 
 const LiveChat = withStyles(liveChatStyles)(_LiveChat);
 
-function _FAQ({ classes }) {
-  return <Card className={classes.card}>FAQ</Card>;
+const helpOptionsStyles = {
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    flexBasis: 240,
+    alignItems: 'center',
+    padding: '14px 6px'
+  },
+
+  icon: {
+    fontSize: 32
+  }
+};
+
+function _HelpOptions({ classes, Icon, label }) {
+  return (
+    <div className={classes.container}>
+      <Icon className={classes.icon} />
+      {label}
+    </div>
+  );
 }
 
-const FAQ = withStyles(liveChatStyles)(_FAQ);
+const HelpOptions = withStyles(helpOptionsStyles)(_HelpOptions);
+
+const FAQStyles = themes => ({
+  card: {
+    background: '#EDEEEF',
+    display: 'flex'
+  },
+
+  searchContainer: {
+    width: 820,
+    color: themes.palette.secondary.main
+  },
+
+  textField: {
+    background: '#ffffff',
+    borderRadius: 20,
+    '& fieldset': {
+      borderRadius: 20
+    }
+  },
+
+  textFieldInput: {
+    padding: 8
+  },
+
+  container: {
+    display: 'flex',
+    marginTop: 14
+  },
+
+  verticalDivider: {
+    width: 1,
+    background: 'rgba(0, 0, 0, 0.1)'
+  },
+
+  wrapper: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: '0px 50px',
+    color: '#545454'
+  },
+  outerWrapper: {
+    display: 'flex',
+    alignItems: 'center'
+  },
+  preferEmail: {
+    fontSize: 18
+  },
+  respond: {
+    fontSize: 12
+  },
+
+  button: {
+    margin: '20px 0px',
+    width: 128,
+    background: '#f5f5f5',
+    color: '#545454'
+  },
+
+  inputAdornment: {
+    '& svg': {
+      color: '#929394',
+      fontSize: 18
+    }
+  },
+
+  email: {
+    fontSize: 16,
+    marginRight: 4
+  }
+});
+
+function _FAQ({ classes, handleClick }) {
+  return (
+    <Card className={classes.card}>
+      <div className={classes.outerWrapper}>
+        <div className={classes.wrapper}>
+          <span className={classes.preferEmail}>Prefer email instead?</span>
+          <Button
+            variant="contained"
+            className={classes.button}
+            onClick={handleClick}
+          >
+            <Email className={classes.email} />
+            Write to us
+          </Button>
+          <span className={classes.respond}>
+            We are super quick in responding to your queries.
+          </span>
+        </div>
+      </div>
+      <div className={classes.verticalDivider} />
+      <div className={classes.searchContainer}>
+        <CardContent>
+          <TextField
+            fullWidth
+            variant="outlined"
+            margin="normal"
+            placeholder="What can we help you with? Start typing your question..."
+            inputProps={{
+              className: classes.textFieldInput
+            }}
+            className={classes.textField}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment
+                  className={classes.inputAdornment}
+                  position="end"
+                >
+                  <Search />
+                </InputAdornment>
+              )
+            }}
+          />
+          <div className={classes.container}>
+            <HelpOptions label="Sharing Openings" Icon={Folder} />
+            <HelpOptions label="Managing Openings" Icon={PersonPinCircle} />
+            <HelpOptions label="Managing Candidattes" Icon={AccountBox} />
+          </div>
+          <div className={classes.container}>
+            <HelpOptions label="Account Management" Icon={AccountCircle} />
+            <HelpOptions label="Sourcing Candidates" Icon={Folder} />
+            <HelpOptions label="Reporting" Icon={Folder} />
+          </div>
+        </CardContent>
+      </div>
+    </Card>
+  );
+}
+
+const FAQ = withStyles(FAQStyles)(_FAQ);
 
 const attachStyles = themes => ({
   attachFile: {
@@ -234,12 +389,22 @@ const helpWidgetStyles = {
 };
 
 function _HelpWidget({ classes }) {
-  const [value, setValue] = useState(2);
+  const [value, setValue] = useState(1);
 
   const handleChange = (_, value) => {
     setValue(value);
   };
 
+  const handleClick = () => {
+    setValue(2);
+  };
+
+  const FAQLabel = (
+    <div className={classes.mailUsLabel}>
+      <Search className={classes.email} />
+      <span>FAQ</span>
+    </div>
+  );
   const mailUsLabel = (
     <div className={classes.mailUsLabel}>
       <Email className={classes.email} />
@@ -255,11 +420,11 @@ function _HelpWidget({ classes }) {
         onChange={handleChange}
       >
         <Tab label="Live Chat" />
-        <Tab label="FAQ" />
+        <Tab classes={{ selected: classes.selectedTab }} label={FAQLabel} />
         <Tab classes={{ selected: classes.selectedTab }} label={mailUsLabel} />
       </Tabs>
       {value === 0 && <LiveChat />}
-      {value === 1 && <FAQ />}
+      {value === 1 && <FAQ handleClick={handleClick} />}
       {value === 2 && <MailUs />}
     </div>
   );
