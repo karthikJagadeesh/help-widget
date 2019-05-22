@@ -50,6 +50,12 @@ const theme = createMuiTheme({
       root: {
         textTransform: 'none'
       }
+    },
+
+    MuiCard: {
+      root: {
+        boxShadow: '0px 0px 8px 4px rgba(0,0,0,0.3)'
+      }
     }
   }
 });

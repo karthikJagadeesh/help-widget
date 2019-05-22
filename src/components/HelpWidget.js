@@ -10,6 +10,7 @@ import Tab from '@material-ui/core/Tab';
 import TextField from '@material-ui/core/TextField';
 
 import AttachFile from '@material-ui/icons/AttachFile';
+import Check from '@material-ui/icons/Check';
 import Email from '@material-ui/icons/EmailOutlined';
 
 import { withStyles } from '@material-ui/core/styles';
@@ -63,6 +64,40 @@ function _Attach({ classes }) {
 
 const Attach = withStyles(attachStyles)(_Attach);
 
+const successLabelStyles = {
+  label: {
+    background: '#DDF1D9',
+    padding: '0px 10px 10px',
+    marginTop: 16,
+    fontSize: 12,
+    color: '#367531',
+    border: '1px solid rgba(0,0,0,0.05)'
+  },
+
+  check: {
+    position: 'relative',
+    top: 5,
+    left: -2
+  }
+};
+
+function _SuccessLabel({ classes }) {
+  const text = (
+    <span>
+      Message Sent! Thanks for reaching out! Someone from our team will get back
+      to you soon.
+    </span>
+  );
+  return (
+    <div className={classes.label}>
+      <Check className={classes.check} />
+      {text}
+    </div>
+  );
+}
+
+const SuccessLabel = withStyles(successLabelStyles)(_SuccessLabel);
+
 const mailUsStyles = {
   card: {
     width: 560,
@@ -73,6 +108,7 @@ const mailUsStyles = {
   },
   cardActions: {
     justifyContent: 'space-between',
+    alignItems: 'start',
     padding: '12px 28px 38px 32px'
   },
 
@@ -92,9 +128,28 @@ const mailUsStyles = {
 };
 
 function _MailUs({ classes }) {
+  const [subject, setSubject] = useState('');
+  const [message, setMessage] = useState('');
+  const [isMailSent, setMailStatus] = useState(false);
+
+  const handleSubmit = () => {
+    const isValid = subject !== '' && message !== '';
+
+    if (isValid) {
+      localStorage.setItem('subject', subject);
+      localStorage.setItem('message', message);
+      setSubject('');
+      setMessage('');
+      setMailStatus(true);
+    } else {
+      setMailStatus(false);
+    }
+  };
+
   return (
     <Card className={classes.card}>
       <CardContent className={classes.cardContent}>
+        {isMailSent && <SuccessLabel />}
         <TextField
           fullWidth
           variant="outlined"
@@ -121,6 +176,8 @@ function _MailUs({ classes }) {
           inputProps={{
             className: classes.textFieldInput
           }}
+          value={subject}
+          onChange={({ target: { value } }) => setSubject(value)}
         />
         <TextField
           className={classes.textField}
@@ -133,11 +190,13 @@ function _MailUs({ classes }) {
           InputProps={{
             className: classes.textFieldInput
           }}
+          value={message}
+          onChange={({ target: { value } }) => setMessage(value)}
         />
       </CardContent>
       <CardActions className={classes.cardActions}>
         <Attach />
-        <Button color="secondary" variant="contained">
+        <Button color="secondary" variant="contained" onClick={handleSubmit}>
           Send Mail
         </Button>
       </CardActions>
