@@ -45,6 +45,9 @@ const theme = createMuiTheme({
       adornedStart: {
         paddingLeft: 0
       },
+      adornedEnd: {
+        paddingRight: 0
+      },
       focused: {
         boxShadow: '0px 0px 8px 0px #94BBCE'
       }

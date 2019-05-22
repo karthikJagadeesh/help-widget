@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -12,22 +12,124 @@ import TextField from '@material-ui/core/TextField';
 import AccountBox from '@material-ui/icons/AccountBox';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import AttachFile from '@material-ui/icons/AttachFile';
+import ChatBubble from '@material-ui/icons/ChatBubble';
 import Check from '@material-ui/icons/Check';
 import Email from '@material-ui/icons/EmailOutlined';
 import Folder from '@material-ui/icons/Folder';
+import Person from '@material-ui/icons/Person';
 import PersonPinCircle from '@material-ui/icons/PersonPinCircle';
 import Search from '@material-ui/icons/Search';
+import Send from '@material-ui/icons/Send';
 
 import { withStyles } from '@material-ui/core/styles';
 
+const chatStyles = {
+  container: {
+    display: 'flex',
+    alignItems: 'center',
+    margin: '20px 0px 0px 10px'
+  },
+
+  chat: {
+    background: '#EDEEEF',
+    borderRadius: 10,
+    padding: 10,
+    marginLeft: 5,
+    color: '#545454'
+  },
+
+  icon: {
+    color: '#929394'
+  }
+};
+
+function _Chat({ classes }) {
+  return (
+    <div className={classes.container}>
+      <Person className={classes.icon} />
+      <div className={classes.chat}>Hi there! How can I help you today?</div>
+    </div>
+  );
+}
+
+const Chat = withStyles(chatStyles)(_Chat);
+
+const chatboxStyles = {
+  container: {
+    height: 196,
+    background: '#ffffff',
+    border: '1px solid rgba(0,0,0,0.05)',
+    borderRadius: 4
+  }
+};
+
+function _ChatBox({ classes }) {
+  const [showChat, setChatStatus] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+    setTimeout(() => {
+      if (isMounted) {
+        setChatStatus(true);
+      }
+    }, 600);
+
+    return () => {
+      isMounted = false;
+    };
+  });
+
+  return <div className={classes.container}>{showChat && <Chat />}</div>;
+}
+
+const ChatBox = withStyles(chatboxStyles)(_ChatBox);
+
 const liveChatStyles = {
   card: {
-    width: 560
+    width: 560,
+    background: '#EDEEEF'
+  },
+
+  textFieldInputProps: {
+    background: '#ffffff',
+    fontSize: 14
+  },
+  inputAdornment: {
+    marginRight: 14,
+    '&:hover': {
+      cursor: 'pointer'
+    },
+    color: '#929394'
   }
 };
 
 function _LiveChat({ classes }) {
-  return <Card className={classes.card}>Live chat</Card>;
+  return (
+    <Card className={classes.card}>
+      <CardContent>
+        <ChatBox />
+        <div>
+          <TextField
+            fullWidth
+            variant="outlined"
+            margin="normal"
+            placeholder="Type here to chat with us!"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment
+                  className={classes.inputAdornment}
+                  position="start"
+                >
+                  <Send />
+                </InputAdornment>
+              ),
+              className: classes.textFieldInputProps
+            }}
+          />
+        </div>
+      </CardContent>
+    </Card>
+  );
 }
 
 const LiveChat = withStyles(liveChatStyles)(_LiveChat);
@@ -361,24 +463,37 @@ function _MailUs({ classes }) {
 
 const MailUs = withStyles(mailUsStyles)(_MailUs);
 
-const helpWidgetStyles = {
+const labelStyles = {
   mailUsLabel: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'
   },
 
+  email: {
+    fontSize: 18,
+    marginRight: 5
+  }
+};
+
+function _Label({ classes, Icon, text }) {
+  return (
+    <div className={classes.mailUsLabel}>
+      <Icon className={classes.email} />
+      <span>{text}</span>
+    </div>
+  );
+}
+
+const Label = withStyles(labelStyles)(_Label);
+
+const helpWidgetStyles = {
   tabsIndicator: {
     display: 'none'
   },
 
   selectedTab: {
     background: '#EDEEEF'
-  },
-
-  email: {
-    fontSize: 18,
-    marginRight: 5
   },
 
   container: {
@@ -389,7 +504,7 @@ const helpWidgetStyles = {
 };
 
 function _HelpWidget({ classes }) {
-  const [value, setValue] = useState(1);
+  const [value, setValue] = useState(0);
 
   const handleChange = (_, value) => {
     setValue(value);
@@ -399,18 +514,11 @@ function _HelpWidget({ classes }) {
     setValue(2);
   };
 
-  const FAQLabel = (
-    <div className={classes.mailUsLabel}>
-      <Search className={classes.email} />
-      <span>FAQ</span>
-    </div>
-  );
-  const mailUsLabel = (
-    <div className={classes.mailUsLabel}>
-      <Email className={classes.email} />
-      <span>Mail Us</span>
-    </div>
-  );
+  const liveChat = <Label Icon={ChatBubble} text="Live Chat" />;
+  const FAQLabel = <Label Icon={Search} text="FAQ" />;
+  const mailUsLabel = <Label Icon={Email} text="Mail Us" />;
+
+  const tabs = [liveChat, FAQLabel, mailUsLabel];
 
   return (
     <div className={classes.container}>
@@ -419,9 +527,13 @@ function _HelpWidget({ classes }) {
         value={value}
         onChange={handleChange}
       >
-        <Tab label="Live Chat" />
-        <Tab classes={{ selected: classes.selectedTab }} label={FAQLabel} />
-        <Tab classes={{ selected: classes.selectedTab }} label={mailUsLabel} />
+        {tabs.map((tab, index) => (
+          <Tab
+            classes={{ selected: classes.selectedTab }}
+            label={tab}
+            key={index}
+          />
+        ))}
       </Tabs>
       {value === 0 && <LiveChat />}
       {value === 1 && <FAQ handleClick={handleClick} />}
