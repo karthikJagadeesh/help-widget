@@ -1,6 +1,10 @@
 import React from 'react';
 
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import {
+  createMuiTheme,
+  MuiThemeProvider,
+  withStyles
+} from '@material-ui/core/styles';
 
 import HelpWidget from './components/HelpWidget';
 
@@ -60,14 +64,22 @@ const theme = createMuiTheme({
   }
 });
 
-function App() {
+const appStyles = {
+  container: {
+    position: 'fixed',
+    bottom: 0,
+    right: 0
+  }
+};
+
+function _App({ classes }) {
   return (
     <MuiThemeProvider theme={theme}>
-      <div>
+      <div className={classes.container}>
         <HelpWidget />
       </div>
     </MuiThemeProvider>
   );
 }
 
-export default App;
+export default withStyles(appStyles)(_App);

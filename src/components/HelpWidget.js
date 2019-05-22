@@ -224,6 +224,12 @@ const helpWidgetStyles = {
   email: {
     fontSize: 18,
     marginRight: 5
+  },
+
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-end'
   }
 };
 
@@ -242,7 +248,7 @@ function _HelpWidget({ classes }) {
   );
 
   return (
-    <div>
+    <div className={classes.container}>
       <Tabs
         classes={{ indicator: classes.tabsIndicator }}
         value={value}
