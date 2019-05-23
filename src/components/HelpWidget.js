@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
+import Fade from '@material-ui/core/Fade';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -107,30 +108,32 @@ const liveChatStyles = {
 
 function _LiveChat({ classes }) {
   return (
-    <Card className={classes.card}>
-      <CardContent>
-        <ChatBox />
-        <div>
-          <TextField
-            fullWidth
-            variant="outlined"
-            margin="normal"
-            placeholder="Type here to chat with us!"
-            InputProps={{
-              endAdornment: (
-                <InputAdornment
-                  className={classes.inputAdornment}
-                  position="start"
-                >
-                  <Send />
-                </InputAdornment>
-              ),
-              className: classes.textFieldInputProps
-            }}
-          />
-        </div>
-      </CardContent>
-    </Card>
+    <Fade in>
+      <Card className={classes.card}>
+        <CardContent>
+          <ChatBox />
+          <div>
+            <TextField
+              fullWidth
+              variant="outlined"
+              margin="normal"
+              placeholder="Type here to chat with us!"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment
+                    className={classes.inputAdornment}
+                    position="start"
+                  >
+                    <Send />
+                  </InputAdornment>
+                ),
+                className: classes.textFieldInputProps
+              }}
+            />
+          </div>
+        </CardContent>
+      </Card>
+    </Fade>
   );
 }
 
@@ -234,59 +237,61 @@ const FAQStyles = themes => ({
 
 function _FAQ({ classes, handleClick }) {
   return (
-    <Card className={classes.card}>
-      <div className={classes.outerWrapper}>
-        <div className={classes.wrapper}>
-          <span className={classes.preferEmail}>Prefer email instead?</span>
-          <Button
-            variant="contained"
-            className={classes.button}
-            onClick={handleClick}
-          >
-            <Email className={classes.email} />
-            Write to us
-          </Button>
-          <span className={classes.respond}>
-            We are super quick in responding to your queries.
-          </span>
+    <Fade in>
+      <Card className={classes.card}>
+        <div className={classes.outerWrapper}>
+          <div className={classes.wrapper}>
+            <span className={classes.preferEmail}>Prefer email instead?</span>
+            <Button
+              variant="contained"
+              className={classes.button}
+              onClick={handleClick}
+            >
+              <Email className={classes.email} />
+              Write to us
+            </Button>
+            <span className={classes.respond}>
+              We are super quick in responding to your queries.
+            </span>
+          </div>
         </div>
-      </div>
-      <div className={classes.verticalDivider} />
-      <div className={classes.searchContainer}>
-        <CardContent>
-          <TextField
-            fullWidth
-            variant="outlined"
-            margin="normal"
-            placeholder="What can we help you with? Start typing your question..."
-            inputProps={{
-              className: classes.textFieldInput
-            }}
-            className={classes.textField}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment
-                  className={classes.inputAdornment}
-                  position="end"
-                >
-                  <Search />
-                </InputAdornment>
-              )
-            }}
-          />
-          <div className={classes.container}>
-            <HelpOptions label="Sharing Openings" Icon={Folder} />
-            <HelpOptions label="Managing Openings" Icon={PersonPinCircle} />
-            <HelpOptions label="Managing Candidattes" Icon={AccountBox} />
-          </div>
-          <div className={classes.container}>
-            <HelpOptions label="Account Management" Icon={AccountCircle} />
-            <HelpOptions label="Sourcing Candidates" Icon={Folder} />
-            <HelpOptions label="Reporting" Icon={Folder} />
-          </div>
-        </CardContent>
-      </div>
-    </Card>
+        <div className={classes.verticalDivider} />
+        <div className={classes.searchContainer}>
+          <CardContent>
+            <TextField
+              fullWidth
+              variant="outlined"
+              margin="normal"
+              placeholder="What can we help you with? Start typing your question..."
+              inputProps={{
+                className: classes.textFieldInput
+              }}
+              className={classes.textField}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment
+                    className={classes.inputAdornment}
+                    position="end"
+                  >
+                    <Search />
+                  </InputAdornment>
+                )
+              }}
+            />
+            <div className={classes.container}>
+              <HelpOptions label="Sharing Openings" Icon={Folder} />
+              <HelpOptions label="Managing Openings" Icon={PersonPinCircle} />
+              <HelpOptions label="Managing Candidattes" Icon={AccountBox} />
+            </div>
+            <div className={classes.container}>
+              <HelpOptions label="Account Management" Icon={AccountCircle} />
+              <HelpOptions label="Sourcing Candidates" Icon={Folder} />
+              <HelpOptions label="Reporting" Icon={Folder} />
+            </div>
+          </CardContent>
+        </div>
+      </Card>
+    </Fade>
   );
 }
 
@@ -410,60 +415,65 @@ function _MailUs({ classes }) {
   };
 
   return (
-    <Card className={classes.card}>
-      <CardContent className={classes.cardContent}>
-        {isMailSent && <SuccessLabel />}
-        <TextField
-          fullWidth
-          variant="outlined"
-          disabled
-          margin="normal"
-          value="support@recruiterbox.com"
-          inputProps={{
-            className: classes.textFieldInput
-          }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment className={classes.inputAdornment} position="end">
-                To
-              </InputAdornment>
-            )
-          }}
-        />
-        <TextField
-          className={classes.textField}
-          fullWidth
-          variant="outlined"
-          margin="normal"
-          placeholder="Subject"
-          inputProps={{
-            className: classes.textFieldInput
-          }}
-          value={subject}
-          onChange={({ target: { value } }) => setSubject(value)}
-        />
-        <TextField
-          className={classes.textField}
-          fullWidth
-          multiline
-          variant="outlined"
-          rows="4"
-          margin="normal"
-          placeholder="Message..."
-          InputProps={{
-            className: classes.textFieldInput
-          }}
-          value={message}
-          onChange={({ target: { value } }) => setMessage(value)}
-        />
-      </CardContent>
-      <CardActions className={classes.cardActions}>
-        <Attach />
-        <Button color="secondary" variant="contained" onClick={handleSubmit}>
-          Send Mail
-        </Button>
-      </CardActions>
-    </Card>
+    <Fade in>
+      <Card className={classes.card}>
+        <CardContent className={classes.cardContent}>
+          {isMailSent && <SuccessLabel />}
+          <TextField
+            fullWidth
+            variant="outlined"
+            disabled
+            margin="normal"
+            value="support@recruiterbox.com"
+            inputProps={{
+              className: classes.textFieldInput
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment
+                  className={classes.inputAdornment}
+                  position="end"
+                >
+                  To
+                </InputAdornment>
+              )
+            }}
+          />
+          <TextField
+            className={classes.textField}
+            fullWidth
+            variant="outlined"
+            margin="normal"
+            placeholder="Subject"
+            inputProps={{
+              className: classes.textFieldInput
+            }}
+            value={subject}
+            onChange={({ target: { value } }) => setSubject(value)}
+          />
+          <TextField
+            className={classes.textField}
+            fullWidth
+            multiline
+            variant="outlined"
+            rows="4"
+            margin="normal"
+            placeholder="Message..."
+            InputProps={{
+              className: classes.textFieldInput
+            }}
+            value={message}
+            onChange={({ target: { value } }) => setMessage(value)}
+          />
+        </CardContent>
+        <CardActions className={classes.cardActions}>
+          <Attach />
+          <Button color="secondary" variant="contained" onClick={handleSubmit}>
+            Send Mail
+          </Button>
+        </CardActions>
+      </Card>
+    </Fade>
   );
 }
 
