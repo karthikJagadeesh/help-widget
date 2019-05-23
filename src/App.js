@@ -28,10 +28,12 @@ const theme = createMuiTheme({
     MuiTab: {
       root: {
         textTransform: 'none',
-        color: '#929394'
+        color: '#929394',
+        minWidth: 160
       },
       textColorInherit: {
-        color: '#929394'
+        color: '#929394',
+        opacity: 'unset'
       }
     },
 
@@ -61,7 +63,13 @@ const theme = createMuiTheme({
 
     MuiCard: {
       root: {
-        boxShadow: '0px 0px 8px 4px rgba(0,0,0,0.3)'
+        boxShadow: '0px 9px 8px 4px rgba(0,0,0,0.3)'
+      }
+    },
+
+    MuiTouchRipple: {
+      root: {
+        display: 'none'
       }
     }
   }

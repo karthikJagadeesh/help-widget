@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import cx from 'classnames';
 
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -332,6 +333,10 @@ const successLabelStyles = {
     border: '1px solid rgba(0,0,0,0.05)'
   },
 
+  span: {
+    fontSize: 14
+  },
+
   check: {
     position: 'relative',
     top: 5,
@@ -341,7 +346,7 @@ const successLabelStyles = {
 
 function _SuccessLabel({ classes }) {
   const text = (
-    <span>
+    <span className={classes.span}>
       Message Sent! Thanks for reaching out! Someone from our team will get back
       to you soon.
     </span>
@@ -468,7 +473,8 @@ const labelStyles = {
   mailUsLabel: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginTop: 10
   },
 
   email: {
@@ -493,22 +499,41 @@ const helpWidgetStyles = {
     display: 'none'
   },
 
-  selectedTab: {
-    background: '#EDEEEF'
-  },
-
   container: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-end'
   },
 
+  rootTab: {
+    margin: '0 -14px',
+    '&:before': {
+      content: "' '",
+      position: 'absolute',
+      top: 0,
+      right: 13,
+      bottom: 0,
+      left: 13,
+      zIndex: '-1',
+      borderBottom: 'none',
+      borderRadius: '6px 6px 0 0',
+      background: '#D4D5D6',
+      transform: 'perspective(5px) rotateX(2deg)',
+      transformOrigin: 'bottom'
+    }
+  },
+  rootTabSelected: {
+    '&:before': {
+      background: '#EDEEEF'
+    }
+  },
   closeTab: {
     minWidth: 0,
     width: 60,
     background: '#545556',
     color: '#ffffff',
-    pointerEvents: 'none'
+    pointerEvents: 'none',
+    top: 12
   },
   icon: {
     fontSize: 18
@@ -539,13 +564,13 @@ function _HelpWidget({ classes }) {
         value={value}
         onChange={handleChange}
       >
-        {tabs.map((tab, index) => (
-          <Tab
-            classes={{ selected: classes.selectedTab }}
-            label={tab}
-            key={index}
-          />
-        ))}
+        {tabs.map((tab, index) => {
+          const root =
+            value === index
+              ? cx(classes.rootTab, classes.rootTabSelected)
+              : classes.rootTab;
+          return <Tab classes={{ root }} label={tab} key={index} />;
+        })}
         <Tab
           className={classes.closeTab}
           label={<Close className={classes.icon} />}
