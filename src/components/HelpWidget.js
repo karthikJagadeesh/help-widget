@@ -14,6 +14,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import AttachFile from '@material-ui/icons/AttachFile';
 import ChatBubble from '@material-ui/icons/ChatBubble';
 import Check from '@material-ui/icons/Check';
+import Close from '@material-ui/icons/Close';
 import Email from '@material-ui/icons/EmailOutlined';
 import Folder from '@material-ui/icons/Folder';
 import Person from '@material-ui/icons/Person';
@@ -86,7 +87,7 @@ const ChatBox = withStyles(chatboxStyles)(_ChatBox);
 
 const liveChatStyles = {
   card: {
-    width: 560,
+    width: 660,
     background: '#EDEEEF'
   },
 
@@ -357,7 +358,7 @@ const SuccessLabel = withStyles(successLabelStyles)(_SuccessLabel);
 
 const mailUsStyles = {
   card: {
-    width: 560,
+    width: 660,
     background: '#EDEEEF'
   },
   cardContent: {
@@ -500,6 +501,17 @@ const helpWidgetStyles = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-end'
+  },
+
+  closeTab: {
+    minWidth: 0,
+    width: 60,
+    background: '#545556',
+    color: '#ffffff',
+    pointerEvents: 'none'
+  },
+  icon: {
+    fontSize: 18
   }
 };
 
@@ -534,6 +546,10 @@ function _HelpWidget({ classes }) {
             key={index}
           />
         ))}
+        <Tab
+          className={classes.closeTab}
+          label={<Close className={classes.icon} />}
+        />
       </Tabs>
       {value === 0 && <LiveChat />}
       {value === 1 && <FAQ handleClick={handleClick} />}
