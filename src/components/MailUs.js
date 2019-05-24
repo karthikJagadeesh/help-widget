@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -23,7 +23,11 @@ const attachStyles = themes => ({
 
   span: {
     color: themes.palette.primary.main,
-    fontSize: 12
+    fontSize: 12,
+    maxWidth: 200,
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden'
   },
 
   container: {
@@ -36,10 +40,23 @@ const attachStyles = themes => ({
 });
 
 function _Attach({ classes }) {
+  const [fileName, setFileName] = useState('Attach files');
+  const ref = useRef();
+
+  const handleChange = () => {
+    const files = ref.current.files;
+    if (files[0]) {
+      setFileName(files[0].name);
+    } else {
+      setFileName('Attach files');
+    }
+  };
+
   return (
-    <div className={classes.container}>
+    <div className={classes.container} onClick={() => ref.current.click()}>
       <AttachFile color="primary" className={classes.attachFile} />
-      <span className={classes.span}> Attach files</span>
+      <input type="file" ref={ref} onChange={handleChange} hidden />
+      <span className={classes.span}>{fileName}</span>
     </div>
   );
 }
@@ -185,7 +202,7 @@ function _MailUs({ classes }) {
           <TextField {...messageProps} />
         </CardContent>
         <CardActions className={classes.cardActions}>
-          <Attach />
+          <Attach isMailSent={isMailSent} />
           <Button color="secondary" variant="contained" onClick={handleSubmit}>
             Send Mail
           </Button>

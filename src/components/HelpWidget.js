@@ -78,6 +78,7 @@ const helpWidgetStyles = {
       background: colors.whiteVariant
     }
   },
+
   closeTab: {
     minWidth: 0,
     width: 60,
