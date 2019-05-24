@@ -1,96 +1,89 @@
 import React from 'react';
 
-import {
-  createMuiTheme,
-  MuiThemeProvider,
-  withStyles
-} from '@material-ui/core/styles';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 
 import HelpWidget from './components/HelpWidget';
+import { colors } from './components/utils';
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#299dd4'
+const overrides = {
+  MuiTab: {
+    root: {
+      textTransform: 'none',
+      color: colors.grey,
+      minWidth: 160
     },
-    secondary: {
-      main: '#49789E'
+    textColorInherit: {
+      color: colors.grey,
+      opacity: 'unset'
     }
   },
 
-  typography: {
-    fontFamily: 'Segoe UI, sans-serif',
-    fontSize: 12,
-    useNextVariants: true
+  MuiInputBase: {
+    root: {
+      '&$disabled': {
+        background: colors.lightGrey
+      }
+    }
   },
 
-  overrides: {
-    MuiTab: {
-      root: {
-        textTransform: 'none',
-        color: '#929394',
-        minWidth: 160
-      },
-      textColorInherit: {
-        color: '#929394',
-        opacity: 'unset'
-      }
+  MuiOutlinedInput: {
+    adornedStart: {
+      paddingLeft: 0
     },
-
-    MuiInputBase: {
-      disabled: {
-        background: '#D4D5D6'
-      }
+    adornedEnd: {
+      paddingRight: 0
     },
-
-    MuiOutlinedInput: {
-      adornedStart: {
-        paddingLeft: 0
-      },
-      adornedEnd: {
-        paddingRight: 0
-      },
-      focused: {
-        boxShadow: '0px 0px 8px 0px #94BBCE'
+    root: {
+      '&$focused': {
+        boxShadow: `0px 0px 8px 0px ${colors.lightBlue}`
       }
-    },
+    }
+  },
 
-    MuiButton: {
-      root: {
-        textTransform: 'none'
-      }
-    },
+  MuiButton: {
+    root: {
+      textTransform: 'none'
+    }
+  },
 
-    MuiCard: {
-      root: {
-        boxShadow: '0px 9px 8px 4px rgba(0,0,0,0.3)'
-      }
-    },
+  MuiCard: {
+    root: {
+      boxShadow: '0px 9px 8px 4px rgba(0,0,0,0.3)'
+    }
+  },
 
-    MuiTouchRipple: {
-      root: {
-        display: 'none'
-      }
+  MuiTouchRipple: {
+    root: {
+      display: 'none'
     }
   }
-});
-
-const appStyles = {
-  container: {
-    position: 'fixed',
-    bottom: 0,
-    right: 0
+};
+const typography = {
+  fontFamily: 'Segoe UI, sans-serif',
+  fontSize: 12,
+  useNextVariants: true
+};
+const palette = {
+  primary: {
+    main: colors.primary
+  },
+  secondary: {
+    main: colors.secondary
   }
 };
 
-function _App({ classes }) {
+const theme = createMuiTheme({
+  palette,
+  typography,
+  overrides
+});
+
+function App() {
   return (
     <MuiThemeProvider theme={theme}>
-      <div className={classes.container}>
-        <HelpWidget />
-      </div>
+      <HelpWidget />
     </MuiThemeProvider>
   );
 }
 
-export default withStyles(appStyles)(_App);
+export default App;
